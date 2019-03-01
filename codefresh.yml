@@ -49,8 +49,7 @@ steps:
   install-cp-helm-charts:
     image: codefresh/cfstep-helm:2.13.0
     environment:
-      - CHART_REPO_URL=stable/redash
-      - CHART_REF=redash
+      - CHART_REF=stable/redash
       - RELEASE_NAME="redash"
       - KUBE_CONTEXT=${{K8S_CLUSTER}}
       - NAMESPACE="${{NAMESPACE}"
