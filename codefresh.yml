@@ -56,6 +56,3 @@ steps:
       - NAMESPACE="${{NAMESPACE}"
       - VALUESFILE_=values.yml
       - VALUE_ingress_host_size="${{HOST}}"
-    commands:
-      - helm dep update stable/redash 
-      - helm install stable/redash 
