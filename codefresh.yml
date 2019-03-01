@@ -53,9 +53,9 @@ steps:
       - CHART_REF=redash
       - RELEASE_NAME="redash"
       - KUBE_CONTEXT=${{K8S_CLUSTER}}
-      - NAMESPACE="${NAMESPACE}"
+      - NAMESPACE="${{NAMESPACE}"
       - VALUESFILE_=values.yml
       - VALUE_ingress_host_size="${{HOST}}"
     commands:
-      - helm dep update stable/redash
-      - helm install stable/redash
+      - helm dep update stable/redash 
+      - helm install stable/redash 
