@@ -11,7 +11,7 @@ steps:
     image: alpine:latest
     commands:
       - cf_export K8S_CLUSTER=k8s-prod-credimi-com
-      - cf_export HOST=credimi.com
+      - cf_export HOST=redash.prod.credimi.com
     when:
       condition:
         all:
@@ -21,7 +21,7 @@ steps:
     image: alpine:latest
     commands:
       - cf_export K8S_CLUSTER=k8s110-qa-credimi-com
-      - cf_export HOST=${{CF_BRANCH_TAG_NORMALIZED}}.credimi.ninja
+      - cf_export HOST=redash.qa.credimi.com
     when:
       condition:
         any:
@@ -49,7 +49,12 @@ steps:
   install-cp-helm-charts:
     image: codefresh/cfstep-helm:2.9.0
     environment:
-      - CHART_REPO_URL=redash
+      - CHART_REPO_URL=stable/redash
       - CHART_REF=redash
       - RELEASE_NAME="redash"
       - KUBE_CONTEXT=${{K8S_CLUSTER}}
+      - VALUESFILE_=values.yml
+      - VALUE_ingress_host_size="${{HOST}}"
+    commands:
+      - helm dep update stable/redash
+      - helm install stable/redash
