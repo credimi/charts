@@ -47,7 +47,7 @@ steps:
       - bash -c 'kubectl get secret lenses-secrets --export -o yaml --namespace=default | kubectl apply --namespace=${{NAMESPACE}} -f -'
 
   install-cp-helm-charts:
-    image: codefresh/cfstep-helm:2.13.0
+    image: codefresh/cfstep-helm:2.12.3
     environment:
       - CHART_REF=stable/redash
       - RELEASE_NAME="redash"
