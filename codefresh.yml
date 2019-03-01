@@ -1,0 +1,55 @@
+version: '1.0'
+
+steps:
+
+  set-common-vars:
+    image: alpine:latest
+    commands:
+     - cf_export NAMESPACE=proredashd
+
+  set-prod-vars:
+    image: alpine:latest
+    commands:
+      - cf_export K8S_CLUSTER=k8s-prod-credimi-com
+      - cf_export HOST=credimi.com
+    when:
+      condition:
+        all:
+          semverTag: 'match("${{CF_BRANCH}}", "^release-[0-9]{8}$", true) == true'
+
+  set-qa-vars:
+    image: alpine:latest
+    commands:
+      - cf_export K8S_CLUSTER=k8s110-qa-credimi-com
+      - cf_export HOST=${{CF_BRANCH_TAG_NORMALIZED}}.credimi.ninja
+    when:
+      condition:
+        any:
+          semverTag: 'match("${{CF_BRANCH}}", "^release-[0-9]{8}$", true) == false'
+
+  see-them-vars:
+    image: alpine:latest
+    commands:
+      - env
+
+  apply-namespace:
+    type: deploy
+    kind: kubernetes
+    cluster: ${{K8S_CLUSTER}}
+    namespace: ${{NAMESPACE}}
+    file_path: ./namespace.yml
+
+  secret-controller:
+    image: codefresh/cf-deploy-kubernetes
+    commands:
+      - kubectl config use-context ${{K8S_CLUSTER}}
+      - bash -c 'kubectl get secret dockerhub-instapartners --export -o yaml --namespace=default | kubectl apply --namespace=${{NAMESPACE}} -f -'
+      - bash -c 'kubectl get secret lenses-secrets --export -o yaml --namespace=default | kubectl apply --namespace=${{NAMESPACE}} -f -'
+
+  install-cp-helm-charts:
+    image: codefresh/cfstep-helm:2.9.0
+    environment:
+      - CHART_REPO_URL=redash
+      - CHART_REF=redash
+      - RELEASE_NAME="redash"
+      - KUBE_CONTEXT=${{K8S_CLUSTER}}
