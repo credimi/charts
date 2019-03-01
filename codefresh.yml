@@ -54,4 +54,4 @@ steps:
       - KUBE_CONTEXT=${{K8S_CLUSTER}}
       - NAMESPACE="${{NAMESPACE}"
       - VALUESFILE_=values.yml
-      - VALUE_ingress_host_size="${{HOST}}"
+      - VALUE_ingress_hosts="${{HOST}}"
