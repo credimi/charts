@@ -5,7 +5,7 @@ steps:
   set-common-vars:
     image: alpine:latest
     commands:
-     - cf_export NAMESPACE=proredashd
+     - cf_export NAMESPACE=redash
 
   set-prod-vars:
     image: alpine:latest
@@ -53,6 +53,7 @@ steps:
       - CHART_REF=redash
       - RELEASE_NAME="redash"
       - KUBE_CONTEXT=${{K8S_CLUSTER}}
+      - NAMESPACE="${NAMESPACE}"
       - VALUESFILE_=values.yml
       - VALUE_ingress_host_size="${{HOST}}"
     commands:
