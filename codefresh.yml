@@ -46,7 +46,7 @@ steps:
       - bash -c 'kubectl get secret dockerhub-instapartners --export -o yaml --namespace=default | kubectl apply --namespace=${{NAMESPACE}} -f -'
       - bash -c 'kubectl get secret lenses-secrets --export -o yaml --namespace=default | kubectl apply --namespace=${{NAMESPACE}} -f -'
 
-  install-cp-helm-charts:
+  install-redash:
     image: codefresh/cfstep-helm:2.12.3
     environment:
       - CHART_REF=stable/redash
