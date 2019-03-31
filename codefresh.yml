@@ -10,7 +10,7 @@ steps:
   set-prod-vars:
     image: alpine:latest
     commands:
-      - cf_export K8S_CLUSTER=k8s-prod-credimi-com
+      - cf_export K8S_CLUSTER=prod-credimi-com
       - cf_export HOST=redash.prod.credimi.com
     when:
       condition:
@@ -20,7 +20,7 @@ steps:
   set-qa-vars:
     image: alpine:latest
     commands:
-      - cf_export K8S_CLUSTER=k8s110-qa-credimi-com
+      - cf_export K8S_CLUSTER=qa-credimi-com
       - cf_export HOST=redash.qa.credimi.com
     when:
       condition:
